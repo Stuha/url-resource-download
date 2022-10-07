@@ -10,15 +10,16 @@ use App\Models\UrlContent;
 class UrlContentService
 {
     private string $url = '';
+    private string $content = '';
 
     public function downloadUrlResource():void
     {
         $urlRepository = new UrlContentRepository();
 
         $urlResource = $this->createUrlResource($urlRepository);
-        $content = $this->getUrlContent($urlRepository, $urlResource->id);
+        $this->setUrlContent($urlRepository, $urlResource->id);
 
-        Storage::disk('local')->put("public/$urlResource->id/$urlResource->filename",  $content);
+        Storage::disk('local')->put("public/$urlResource->id/$urlResource->filename",  $this->content);
 
         $urlRepository->update($urlResource->id, ['status' => Status::COMPLETE]);
     }
@@ -36,16 +37,14 @@ class UrlContentService
         return $urlRepository->create($urlResource);
     }
 
-    private function getUrlContent(UrlContentRepository $urlRepository, int $id):string
+    private function setUrlContent(UrlContentRepository $urlRepository, int $id):void
     {
         try {
             $urlRepository->update($id, ['status' => Status::DOWNLOADING]);
 
-            $content = file_get_contents($this->url);
+            $this->content = file_get_contents($this->url);
         } catch (\Throwable $th) {
             $urlRepository->update($id, ['status' => Status::ERROR]);
         }
-        
-        return $content;
     }
 }

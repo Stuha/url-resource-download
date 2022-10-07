@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use App\Repositories\UrlContentRepository;
 use App\Services\UrlContentService;
 use App\Jobs\QueueTaskForDownload;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class UrlContentController extends Controller
 {
@@ -23,13 +26,14 @@ class UrlContentController extends Controller
         $this->queueTaskJob = $queueTask;
     }
 
-    public function read()
+    public function read():View
     {
         $contents = $this->contentRepository->getAll();
+
         return view('url-content', compact('contents'));
     }
 
-    public function store(UrlContentRequest $request)
+    public function store(UrlContentRequest $request):RedirectResponse
     {
         $this->urlContentService->setUrl($request->url);
         
@@ -39,7 +43,7 @@ class UrlContentController extends Controller
         
     }
 
-    public function downloadContent(Request $request)
+    public function downloadContent(Request $request):StreamedResponse
     {
         return Storage::download("public/$request->id/$request->filename");
     }
