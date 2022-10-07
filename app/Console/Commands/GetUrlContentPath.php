@@ -54,6 +54,7 @@ class GetUrlContentPath extends Command
         }
 
         $urlToContent = Storage::url("public/$urlContent->id/$urlContent->filename");
+        
         $this->info($urlToContent);
         
         return 0;
