@@ -39,10 +39,16 @@ class QueueUrl extends Command
      */
     public function handle(UrlContentService $downloadService, QueueTaskForDownload $queueTask)
     {
+        $url_validation_regex = "/^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$/"; 
+
+        if (preg_match($url_validation_regex, $this->argument('url')) == false) {
+           $this->error('Please enter valid url.');
+        }
+        
         $downloadService->setUrl($this->argument('url'));
         
         $queueTask->dispatch($downloadService);
 
-        return 1;
+        return 0;
     }
 }

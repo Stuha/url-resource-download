@@ -38,11 +38,11 @@ class GetUrlResources extends Command
      */
     public function handle(UrlContentRepository $urlRepository)
     {
-        $urlResurces = $urlRepository->getAll()->toArray();
+        $urlsContents = $urlRepository->getAll()->toArray();
         
         $this->table(
             ['Id', 'Filename', 'Url', 'Status'],
-            $urlResurces
+            $urlsContents
         );
         return 0;
     }
