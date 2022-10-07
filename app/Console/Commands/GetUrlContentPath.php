@@ -40,14 +40,17 @@ class GetUrlContentPath extends Command
      */
     public function handle(UrlContentRepository $urlContentRepository)
     {
-        $urlContent = $urlContentRepository->getById($this->argument('id'));
+        try {
+            $urlContent = $urlContentRepository->getById($this->argument('id'));
 
-        if (! isset($urlContent)) {
+        } catch (\Throwable $th) {
             $this->error('Url content not found, please make sure you entered valid id.');
+            return 1;
         }
 
         if ($urlContent->status !== Status::COMPLETE) {
             $this->error('Please enter id of url with status completed.');
+            return 1;
         }
 
         $urlToContent = Storage::url("public/$urlContent->id/$urlContent->filename");

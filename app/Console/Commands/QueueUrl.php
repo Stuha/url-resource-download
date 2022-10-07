@@ -43,6 +43,7 @@ class QueueUrl extends Command
 
         if (preg_match($url_validation_regex, $this->argument('url')) == false) {
            $this->error('Please enter valid url.');
+           return 1;
         }
         
         $downloadService->setUrl($this->argument('url'));
