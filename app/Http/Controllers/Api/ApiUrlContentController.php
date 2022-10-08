@@ -49,8 +49,9 @@ class ApiUrlContentController extends Controller
     public function store(UrlContentRequest $request)
     {
         $this->urlContentService->setUrl($request->url);
-       
-        $this->queueTaskJob->dispatch($this->urlContentService);
+        $urlContent = $this->urlContentService->createUrlResource($this->contentRepository);
+
+        $this->queueTaskJob->dispatch($this->urlContentService, $urlContent);
 
         return response()->json(['queued_for_execution' => true], Response::HTTP_OK);
     }

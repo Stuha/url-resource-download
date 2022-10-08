@@ -36,8 +36,9 @@ class UrlContentController extends Controller
     public function store(UrlContentRequest $request):RedirectResponse
     {
         $this->urlContentService->setUrl($request->url);
-        
-        $this->queueTaskJob->dispatch($this->urlContentService);
+        $urlContent = $this->urlContentService->createUrlResource($this->contentRepository);
+
+        $this->queueTaskJob->dispatch($this->urlContentService, $urlContent);
         
         return redirect('url-content');
         

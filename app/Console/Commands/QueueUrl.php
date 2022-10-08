@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\QueueTaskForDownload;
+use App\Repositories\UrlContentRepository;
 use App\Services\UrlContentService;
 use Illuminate\Console\Command;
 
@@ -37,7 +38,7 @@ class QueueUrl extends Command
      *
      * @return int
      */
-    public function handle(UrlContentService $downloadService, QueueTaskForDownload $queueTask)
+    public function handle(UrlContentService $downloadService, QueueTaskForDownload $queueTask, UrlContentRepository $urlRepository)
     {
         $url_validation_regex = "/^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$/"; 
 
@@ -47,8 +48,9 @@ class QueueUrl extends Command
         }
         
         $downloadService->setUrl($this->argument('url'));
+        $urlContent = $downloadService->createUrlResource($urlRepository);
         
-        $queueTask->dispatch($downloadService);
+        $queueTask->dispatch($downloadService, $urlContent);
 
         return 0;
     }

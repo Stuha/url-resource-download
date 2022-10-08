@@ -12,16 +12,15 @@ class UrlContentService
     private string $url = '';
     private string $content = '';
 
-    public function downloadUrlResource():void
+    public function downloadUrlResource(UrlContent $urlContent):void
     {
         $urlRepository = new UrlContentRepository();
 
-        $urlResource = $this->createUrlResource($urlRepository);
-        $this->setUrlContent($urlRepository, $urlResource->id);
+        $this->setUrlContent($urlRepository, $urlContent->id);
 
-        Storage::disk('local')->put("public/$urlResource->id/$urlResource->filename",  $this->content);
+        Storage::disk('local')->put("public/$urlContent->id/$urlContent->filename",  $this->content);
 
-        $urlRepository->update($urlResource->id, ['status' => Status::COMPLETE]);
+        $urlRepository->update($urlContent->id, ['status' => Status::COMPLETE]);
     }
 
     public function setUrl(string $url):void
@@ -29,7 +28,7 @@ class UrlContentService
         $this->url = $url;
     }
 
-    private function createUrlResource(UrlContentRepository $urlRepository):UrlContent
+    public function createUrlResource(UrlContentRepository $urlRepository):UrlContent
     {
         $urlResource['filename'] = basename($this->url);
         $urlResource['url'] = $this->url;
