@@ -14,14 +14,14 @@ class GetUrlContentPath extends Command
      *
      * @var string
      */
-    protected $signature = 'url:download-content {id}';
+    protected $signature = 'url:storage-path {id}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Download url content from storage';
+    protected $description = 'Get url path from storage';
 
     /**
      * Create a new command instance.
