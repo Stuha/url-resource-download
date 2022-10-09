@@ -38,7 +38,7 @@ class QueueUrl extends Command
      *
      * @return int
      */
-    public function handle(UrlContentService $downloadService, QueueTaskForDownload $queueTask, UrlContentRepository $urlRepository)
+    public function handle(UrlContentService $urlContentService, QueueTaskForDownload $queueTask, UrlContentRepository $urlRepository)
     {
         $url_validation_regex = "/^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$/"; 
 
@@ -47,10 +47,10 @@ class QueueUrl extends Command
            return 1;
         }
         
-        $downloadService->setUrl($this->argument('url'));
-        $urlContent = $downloadService->createUrlResource($urlRepository);
+        $urlContentService->setUrl($this->argument('url'));
+        $urlContent = $urlContentService->createUrlResource($urlRepository);
         
-        $queueTask->dispatch($downloadService, $urlContent);
+        $queueTask->dispatch($urlContentService, $urlContent);
 
         return 0;
     }
