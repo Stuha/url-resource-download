@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class UrlContentController extends Controller
 {
-    private $urlContentService;
+    private UrlContentService $urlContentService;
 
     public function __construct(
         UrlContentRepository $contentRepository, 

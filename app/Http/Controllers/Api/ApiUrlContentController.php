@@ -9,13 +9,14 @@ use App\Http\Resources\UrlContentCollection;
 use App\Services\UrlContentService;
 use App\Repositories\UrlContentRepository;
 use App\Jobs\QueueTaskForDownload;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 
 class ApiUrlContentController extends Controller
 {
 
-    private $urlContentService;
+    private UrlContentService $urlContentService;
 
     public function __construct(
         UrlContentRepository $contentRepository, 
@@ -26,12 +27,8 @@ class ApiUrlContentController extends Controller
         $this->urlContentService = $urlContentService;
         $this->queueTaskJob = $queueTask;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()
+  
+    public function index():JsonResponse
     {
         $urlsContents = $this->contentRepository->getAll();
 
@@ -40,13 +37,7 @@ class ApiUrlContentController extends Controller
         return $urlsContentsCollection->response();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  App\Http\Requests\UrlContentRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(UrlContentRequest $request)
+    public function store(UrlContentRequest $request):JsonResponse
     {
         $this->urlContentService->setUrl($request->url);
         $urlContent = $this->urlContentService->createUrlResource($this->contentRepository);

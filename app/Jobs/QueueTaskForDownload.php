@@ -14,27 +14,17 @@ class QueueTaskForDownload implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $downloadService;
-    private $urlContent;
+    private UrlContentService $urlContentService;
+    private UrlContent $urlContent;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct(UrlContentService $downloadService, UrlContent $urlContent)
+    public function __construct(UrlContentService $urlContentService, UrlContent $urlContent)
     {
-        $this->downloadService = $downloadService;
+        $this->urlContentService = $urlContentService;
         $this->urlContent = $urlContent;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle():void
     {
-        $this->downloadService->downloadUrlResource($this->urlContent);
+        $this->urlContentService->downloadUrlResource($this->urlContent);
     }
 }
