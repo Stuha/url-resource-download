@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Models\UrlContent;
 use Tests\TestCase;
 
-class CommandGetUrlResourcesTest extends TestCase
+class CommandsTest extends TestCase
 {
     public function test_get_url_resources():void
     {
@@ -16,6 +16,12 @@ class CommandGetUrlResourcesTest extends TestCase
             [ 'Id','Filename', 'Url', 'Status'],
             $urlContents
         );
+    }
 
+    public function test_queue_url():void
+    {
+        $urlContent = UrlContent::factory()->create();
+
+        $this->artisan("url:download $urlContent->url")->assertExitCode(0);
     }
 }
