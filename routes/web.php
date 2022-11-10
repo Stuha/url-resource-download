@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/url-content', [UrlContentController::class, 'read']);
+Route::get('/url-content', [UrlContentController::class, 'read'])->name('url-content');
 Route::get('/download-content', [UrlContentController::class, 'downloadContent'])->name('download-content');
 Route::post('/queue-url', [UrlContentController::class, 'store'])->name('queue-url');
 

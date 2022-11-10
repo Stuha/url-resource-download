@@ -17,7 +17,7 @@ class CreateUrlContentsTable extends Migration
             $table->id();
             $table->string('url');
             $table->string('filename');
-            $table->string('status')->default('Pending');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

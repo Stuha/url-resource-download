@@ -16,5 +16,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('/url-contents', ApiUrlContentController::class);
-Route::get('/download-content', [FileController::class, 'downloadContent']);
+Route::apiResource('/url-content', ApiUrlContentController::class)->only('index', 'store');
+Route::get('/download-content', [FileController::class, 'downloadContent'])->name('download-content');
